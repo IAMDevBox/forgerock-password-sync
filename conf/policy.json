@@ -1,0 +1,67 @@
+{
+  "_comment": "Password policy for ForgeRock IDM — aligned with Oracle IDCS requirements.",
+  "_comment2": "Rule: IDM policy MUST be equal to or stricter than IDCS to prevent sync failures.",
+  "_tutorial": "https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/",
+  "policies": [
+    {
+      "policyId": "minimum-length",
+      "params": {
+        "minLength": 14,
+        "_comment": "IDCS default is 8 — set to 14 to prevent weak passwords that IDCS would reject"
+      }
+    },
+    {
+      "policyId": "at-least-X-capitals",
+      "params": {
+        "numCaps": 1
+      }
+    },
+    {
+      "policyId": "at-least-X-numbers",
+      "params": {
+        "numNums": 1
+      }
+    },
+    {
+      "policyId": "required-character-sets",
+      "params": {
+        "characterSets": [
+          "special-characters:!@#$%^&*()-_=+[]{}|;:,.<>?",
+          "uppercase:ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "lowercase:abcdefghijklmnopqrstuvwxyz",
+          "numbers:0123456789"
+        ],
+        "minSets": 3,
+        "_comment": "Require at least 3 of 4 character sets"
+      }
+    },
+    {
+      "policyId": "no-user-attribute",
+      "params": {
+        "forbiddenAttributes": ["userName", "givenName", "sn", "mail"],
+        "_comment": "Prevent passwords containing username or name"
+      }
+    },
+    {
+      "policyId": "history",
+      "params": {
+        "historyLength": 10,
+        "_comment": "IDCS default is 3 — set to 10 for stronger security"
+      }
+    },
+    {
+      "policyId": "max-age",
+      "params": {
+        "maxAge": 90,
+        "_comment": "90 days — matches IDCS default"
+      }
+    },
+    {
+      "policyId": "min-age",
+      "params": {
+        "minAge": 1,
+        "_comment": "24 hours — matches IDCS default"
+      }
+    }
+  ]
+}

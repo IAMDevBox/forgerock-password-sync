@@ -1,0 +1,82 @@
+---
+# Prometheus alerting rules for ForgeRock IDM password sync monitoring.
+# Import into your Prometheus configuration or Grafana alerting.
+#
+# Tutorial: https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/
+
+groups:
+  - name: forgerock_password_sync
+    interval: 1m
+    rules:
+
+      # Alert when sync failure rate exceeds 5% over 15 minutes
+      - alert: PasswordSyncHighFailureRate
+        expr: |
+          (
+            rate(idm_password_sync_total{status="failure"}[15m])
+            /
+            rate(idm_password_sync_total[15m])
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          team: iam
+        annotations:
+          summary: "ForgeRock IDM password sync failure rate > 5%"
+          description: |
+            Password sync failure rate is {{ printf "%.1f" (mul $value 100) }}% over the last 15 minutes.
+            Common causes: IDCS API throttling, token expiry, password policy mismatch.
+            Check logs: grep -i "password sync" /opt/openidm/logs/openidm0.log.0
+          runbook_url: "https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/#common-password-sync-errors"
+
+      # Alert when sync failure rate exceeds 20% (critical)
+      - alert: PasswordSyncCriticalFailureRate
+        expr: |
+          (
+            rate(idm_password_sync_total{status="failure"}[15m])
+            /
+            rate(idm_password_sync_total[15m])
+          ) > 0.20
+        for: 2m
+        labels:
+          severity: critical
+          team: iam
+        annotations:
+          summary: "CRITICAL: ForgeRock IDM password sync failure rate > 20%"
+          description: |
+            Password sync is critically failing ({{ printf "%.1f" (mul $value 100) }}%).
+            Users changing passwords will NOT be synchronized to Oracle IDCS.
+            Immediate action required.
+          runbook_url: "https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/#monitoring-and-alerting"
+
+      # Alert when average sync duration exceeds 5 seconds
+      - alert: PasswordSyncSlow
+        expr: |
+          histogram_quantile(0.95, rate(idm_password_sync_duration_seconds_bucket[15m])) > 5
+        for: 10m
+        labels:
+          severity: warning
+          team: iam
+        annotations:
+          summary: "ForgeRock IDM password sync is slow (p95 > 5s)"
+          description: |
+            95th percentile sync duration is {{ $value | humanizeDuration }}.
+            This may indicate IDCS API latency or network issues.
+            Check IDCS API status: https://your-tenant.identity.oraclecloud.com/health
+
+      # Alert when retry queue is building up
+      - alert: PasswordSyncRetryQueueGrowing
+        expr: idm_password_sync_retry_queue_size > 50
+        for: 30m
+        labels:
+          severity: warning
+          team: iam
+        annotations:
+          summary: "ForgeRock IDM password sync retry queue has {{ $value }} pending items"
+          description: |
+            The retry queue (repo/passwordSyncFailures) has {{ $value }} pending items.
+            Users may need to reset passwords in IDCS manually.
+            Run retry script manually if needed:
+              curl -X POST http://localhost:8080/openidm/trigger/script \
+                -H "X-OpenIDM-Username: openidm-admin" \
+                -d '{"file":"script/retry-failed-password-syncs.groovy"}'

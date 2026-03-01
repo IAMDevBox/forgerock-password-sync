@@ -1,0 +1,27 @@
+{
+  "_comment": "Partial managed.json — merge the 'onUpdate' hook into your existing conf/managed.json user object.",
+  "_tutorial": "https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/",
+  "managed": {
+    "user": {
+      "_comment": "Add this onUpdate block to your existing user object definition",
+      "onUpdate": {
+        "type": "text/javascript",
+        "file": "script/onUserUpdate.js"
+      },
+      "_comment_properties": "Ensure 'password' is included in your properties list",
+      "properties": [
+        {
+          "name": "password",
+          "type": "string",
+          "title": "Password",
+          "description": "User password (hashed at rest)",
+          "isVirtual": false,
+          "encryption": {
+            "purpose": "idm.password.encryption"
+          },
+          "scope": "private"
+        }
+      ]
+    }
+  }
+}

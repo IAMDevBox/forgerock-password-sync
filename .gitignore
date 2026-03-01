@@ -1,0 +1,24 @@
+# Secrets — NEVER commit these
+conf/boot/boot.properties
+*.secret
+*.key
+*.pem
+*.p12
+*.jks
+
+# Local overrides
+*.local.json
+*.local.groovy
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

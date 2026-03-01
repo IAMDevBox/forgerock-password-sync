@@ -1,0 +1,47 @@
+{
+  "_comment": "ForgeRock IDM REST Connector configuration for Oracle IDCS. Deploy to /opt/openidm/conf/",
+  "_tutorial": "https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/",
+  "name": "idcs",
+  "connectorRef": {
+    "connectorHostRef": "#LOCAL",
+    "connectorName": "org.forgerock.openicf.connectors.rest.RestConnector",
+    "bundleName": "org.forgerock.openicf.connectors.rest-connector",
+    "bundleVersion": "[1.5.0.0,2.0.0.0)"
+  },
+  "poolConfigOption": {
+    "maxObjects": 10,
+    "maxIdle": 10,
+    "maxWait": 150000,
+    "minEvictableIdleTimeMillis": 120000,
+    "minIdle": 1
+  },
+  "configurationProperties": {
+    "baseAddress": "https://your-tenant.identity.oraclecloud.com",
+    "_comment_baseAddress": "Replace 'your-tenant' with your IDCS tenant name",
+    "defaultAuthMethod": "OAUTH2_CLIENT_CREDENTIALS",
+    "oauth2": {
+      "clientId": "your-oauth-client-id",
+      "_comment_clientId": "Create in IDCS: Applications → Confidential Application → Client Credentials",
+      "clientSecret": "&{idcs.client.secret}",
+      "_comment_clientSecret": "Store encrypted value in conf/boot/boot.properties",
+      "tokenEndpoint": "https://your-tenant.identity.oraclecloud.com/oauth2/v1/token",
+      "scope": "urn:opc:idm:__myscopes__"
+    },
+    "customAuthHeaders": {
+      "Content-Type": "application/scim+json"
+    },
+    "connectionTimeout": 30000,
+    "readTimeout": 30000
+  },
+  "operationOptions": {
+    "UPDATE": {
+      "objectFeatures": {
+        "__ACCOUNT__": {
+          "operationOptionInfo": {
+            "$ref": "#/definitions/operationOptionInfoDef"
+          }
+        }
+      }
+    }
+  }
+}
