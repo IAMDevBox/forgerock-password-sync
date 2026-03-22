@@ -1,6 +1,6 @@
 # ForgeRock IDM → Oracle IDCS Password Synchronization
 
-Production-grade password synchronization scripts for ForgeRock Identity Management (IDM) to Oracle Identity Cloud Service (IDCS). Companion repository for the complete tutorial at **[IAMDevBox.com](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/)**.
+Production-grade password synchronization scripts for ForgeRock Identity Management (IDM) to Oracle Identity Cloud Service (IDCS). Companion repository for the complete tutorial at **[IAMDevBox.com](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync)**.
 
 > **62% of password sync implementations fail on first deployment** — this repo includes battle-tested fixes for the top 4 failure modes (policy mismatch, user not found, token expiration, network timeout).
 
@@ -177,16 +177,16 @@ idm_password_sync_duration_seconds
 | `The access token expired` | Token cached too long | TokenCache with 5-minute buffer — already implemented |
 | `Connection timeout after 30000ms` | Network/firewall issue | Retry with exponential backoff — already implemented |
 
-> For detailed troubleshooting steps, see the [full article on IAMDevBox.com](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/).
+> For detailed troubleshooting steps, see the [full article on IAMDevBox.com](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync).
 
 ---
 
 ## Related Resources
 
-- [Complete Password Sync Tutorial](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/) — Full step-by-step guide with case studies
-- [ForgeRock IDM Docker Setup](https://www.iamdevbox.com/posts/keycloak-docker-compose-production-deployment-guide/) — Container-based IDM deployment
-- [OAuth 2.0 Client Credentials Flow](https://www.iamdevbox.com/posts/oauth-20-authorization-flow-using-nodejs-and-express/) — How IDCS API authentication works
-- [IAMDevBox.com Tools](https://www.iamdevbox.com/tools/) — JWT decoder, SAML decoder, PKCE generator
+- [Complete Password Sync Tutorial](https://www.iamdevbox.com/posts/complete-workflow-for-password-synchronization-from-forgerock-idm-to-identity-cloud/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync) — Full step-by-step guide with case studies
+- [ForgeRock IDM Docker Setup](https://www.iamdevbox.com/posts/keycloak-docker-compose-production-deployment-guide/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync) — Container-based IDM deployment
+- [OAuth 2.0 Client Credentials Flow](https://www.iamdevbox.com/posts/oauth-20-authorization-flow-using-nodejs-and-express/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync) — How IDCS API authentication works
+- [IAMDevBox.com Tools](https://www.iamdevbox.com/tools/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync) — JWT decoder, SAML decoder, PKCE generator
 
 ---
 
@@ -196,4 +196,4 @@ MIT License — free to use in production environments.
 
 ---
 
-*Maintained by [IAMDevBox.com](https://www.iamdevbox.com) — ForgeRock, Keycloak, and IAM engineering guides.*
+*Maintained by [IAMDevBox.com](https://www.iamdevbox.com/?utm_source=github&utm_medium=companion-repo&utm_campaign=forgerock-password-sync) — ForgeRock, Keycloak, and IAM engineering guides.*
